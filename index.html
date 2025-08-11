@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepdarkph - Кинематографический фотограф в Минске</title>
+    
+    <!-- Tailwind CSS - No necesitas instalar nada, se carga desde aquí -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Cormorant Garamond para títulos y Inter para texto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Estilos CSS personalizados y animaciones -->
+    <style>
+        /* --- Configuración General --- */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a; /* Un negro un poco más suave que el negro puro */
+            color: #E5E7EB; /* Un blanco grisáceo para que no canse la vista */
+        }
+
+        /* --- Tipografía --- */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        /* --- Animación de aparición al hacer scroll --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* --- Fondo de la sección principal (Héroe) --- */
+        .hero-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            filter: brightness(0.5); /* Oscurece el video para que el texto resalte */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, rgba(10,10,10,0.3) 0%, #0a0a0a 85%); /* Viñeta suave */
+        }
+        
+        /* --- Estilos para la galería del portafolio --- */
+        .gallery-item {
+            transition: transform 0.3s ease, opacity 0.5s ease;
+        }
+        .gallery-item img {
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
+        .filter-button.active {
+            background-color: white;
+            color: black;
+        }
+        
+        /* --- Estilos para las Preguntas Frecuentes (Acordeón) --- */
+        .faq-question {
+            cursor: pointer;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding-top 0.5s ease-in-out;
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+        .faq-question.open .faq-icon {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- BARRA DE NAVEGACIÓN -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold tracking-wider" style="font-family: 'Cormorant Garamond', serif;">DEEPDARKPH</a>
+            <nav class="hidden md:flex space-x-8 text-xs tracking-widest uppercase">
+                <a href="#about" class="hover:text-white transition-colors">Обо мне</a>
+                <a href="#portfolio" class="hover:text-white transition-colors">Портфолио</a>
+                <a href="#services" class="hover:text-white transition-colors">Услуги</a>
+                <a href="#contact" class="hover:text-white transition-colors">Контакт</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Menú Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-95">
+            <a href="#about" class="block text-center py-4 text-sm uppercase tracking-widest hover:bg-gray-900">Обо мне</a>
+            <a href="#portfolio" class="block text-center py-4 text-sm uppercase tracking-widest hover:bg-gray-900">Портфолио</a>
+            <a href="#services" class="block text-center py-4 text-sm uppercase tracking-widest hover:bg-gray-900">Услуги</a>
+            <a href="#process" class="block text-center py-4 text-sm uppercase tracking-widest hover:bg-gray-900">Процесс</a>
+            <a href="#faq" class="block text-center py-4 text-sm uppercase tracking-widest hover:bg-gray-900">FAQ</a>
+            <a href="#contact" class="block text-center py-4 text-sm uppercase tracking-widest hover:bg-gray-900">Контакт</a>
+        </div>
+    </header>
+
+    <!-- SECCIÓN PRINCIPAL (HÉROE) -->
+    <section class="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        <video autoplay loop muted playsinline class="hero-video-bg">
+            <!-- IDEA: Usa tu video más atmosférico. El de la chica bailando sería perfecto. -->
+            <source src="video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="relative z-10 px-4 reveal">
+            <h1 class="text-5xl md:text-8xl font-bold text-white tracking-tighter leading-tight mb-4">Это не просто фото. Это кино.</h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-8">Кинематографичные фотосессии в Минске, которые сделают вас героем собственного кинофильма.</p>
+            <a href="#portfolio" class="bg-white text-black font-bold py-3 px-8 rounded-full hover:bg-gray-300 transition-all duration-300 text-sm tracking-widest uppercase">Смотреть работы</a>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-20">
+        
+        <!-- SECCIÓN: SOBRE MÍ -->
+        <section id="about" class="py-20">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal rounded-lg overflow-hidden">
+                    <!-- IDEA: Usa tu mejor foto profesional aquí. -->
+                    <img src="yana.jpeg" alt="Фотограф Яна" class="w-full h-full object-cover">
+                </div>
+                <div class="reveal">
+                    <h2 class="text-5xl font-bold mb-6">Привет, я Яна.</h2>
+                    <p class="text-gray-400 mb-4">Я фотограф из Минска, но в душе — режиссёр. Для меня фотография — это не просто красивые картинки, а маленькое кино о человеке. Я ищу в каждом его уникальную историю, ловлю живые эмоции и показываю его таким, каким он, возможно, никогда себя не видел.</p>
+                    <p class="text-gray-300 font-medium">Мой стиль — это киношная атмосфера и глубина. Я верю, что в каждом из нас есть главный герой, и моя работа — помочь ему раскрыться в кадре.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: PORTAFOLIO (con filtros) -->
+        <section id="portfolio" class="py-20">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-5xl font-bold mb-2">Портфолио</h2>
+                <p class="text-gray-400">Каждая история уникальна. Вот некоторые из них.</p>
+            </div>
+            </div>
+            <!-- Galería de Fotos -->
+            <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <!-- IDEA: Reemplaza estas imágenes. Usa data-category para los filtros. -->
+                <div class="gallery-item" data-category="portrait"><img src="1.jpg" alt="Портрет девушки в лесу" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item sm:col-span-2" data-category="love"><img src="2.JPG" alt="Силуэт на закате" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item sm:col-span-2" data-category="brand"><img src="3.JPG" alt="Модный портрет" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item" data-category="portrait"><img src="4.JPG" alt="Портрет с неоновым светом" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item" data-category="portrait"><img src="5.jpg" alt="Портрет девушки в лесу" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item sm:col-span-2" data-category="love"><img src="6.JPG" alt="Силуэт на закате" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item sm:col-span-2" data-category="brand"><img src="7.JPG" alt="Модный портрет" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item" data-category="portrait"><img src="8.JPG" alt="Портрет с неоновым светом" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item" data-category="portrait"><img src="9.jpg" alt="Портрет девушки в лесу" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item sm:col-span-2" data-category="love"><img src="10.JPG" alt="Силуэт на закате" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item sm:col-span-2" data-category="brand"><img src="11.JPG" alt="Модный портрет" class="w-full h-full object-cover rounded-md"></div>
+                <div class="gallery-item" data-category="portrait"><img src="12.JPG" alt="Портрет с неоновым светом" class="w-full h-full object-cover rounded-md"></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: SERVICIOS Y PRECIOS -->
+        <section id="services" class="py-20">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-5xl font-bold mb-2">Услуги и Цены</h2>
+                <p class="text-gray-400">Выберите сценарий для вашей истории.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Paquete 1: Express Shooting -->
+                <div class="bg-gray-900/50 p-8 rounded-lg border border-gray-800 text-center reveal hover:border-white hover:scale-105 transition-all duration-300">
+                    <h3 class="text-3xl font-bold mb-4">Кино-Экспресс</h3>
+                    <p class="text-5xl font-bold mb-4">200 <span class="text-lg">BYN</span></p>
+                    <ul class="text-gray-400 space-y-3 mb-8">
+                        <li>1 час съемки</li>
+                        <li>Возможность отснять один образ</li>
+                        <li>Экспресс-разработка концепции</li>
+                        <li>Идеально для портретов</li>
+                    </ul>
+                    <a href="#contact" class="bg-gray-800 text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-black transition-all duration-300 text-sm tracking-widest uppercase">Забронировать</a>
+                </div>
+                <!-- Paquete 2: Full Shooting (Destacado) -->
+                <div class="bg-white text-black p-8 rounded-lg border border-gray-800 text-center reveal scale-105 shadow-2xl shadow-purple-500/10">
+                    <h3 class="text-3xl font-bold mb-2">Полная Кино-История</h3>
+                    <p class="text-xs uppercase tracking-widest mb-4 text-purple-600 font-semibold">Самый популярный</p>
+                    <p class="text-5xl font-bold mb-4">300 <span class="text-lg">BYN</span></p>
+                    <ul class="text-gray-600 space-y-3 mb-8">
+                        <li>До 3 часов съемки</li>
+                        <li>Возможность отснять 1-2 полноценных образа</li>
+                        <li>Глубокая разработка сюжета</li>
+                        <li>Короткое видео-настроение</li>
+                    </ul>
+                    <a href="#contact" class="bg-black text-white font-bold py-3 px-8 rounded-full hover:bg-gray-800 transition-all duration-300 text-sm tracking-widest uppercase">Забронировать</a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECCIÓN: TESTIMONIOS -->
+        <section id="testimonials" class="py-20">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-5xl font-bold mb-2">Что говорят мои героини</h2>
+                <p class="text-gray-400">Истории, рассказанные ими.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- IDEA: Pide a tus clientas satisfechas un pequeño testimonio. -->
+                <div class="bg-gray-900/50 p-8 rounded-lg border border-gray-800 reveal">
+                    <p class="text-gray-300 mb-4">"Яна,я в восторге. Даже слов нет. Спасибо огромное. Фотографии очень красивые И видео под музыку из фильма красота по американски -вообще Спасибо большое ещё раз за работу))) Думаю, что ещё съемки совместные обязательно будут!) Спасибо большое за работу , как я себе это представляла, все так и воплотилось. Ты-талантище! Спасибо ещё раз )"</p>
+                    <p class="font-bold">- Milana</p>
+                </div>
+                <div class="bg-gray-900/50 p-8 rounded-lg border border-gray-800 reveal">
+                    <p class="text-gray-300 mb-4">"Вай, крутяк, очень вайбово и синий точно твой цвет 💥💙 Фото с сигаретой и в воде это вообще что-то с чем-то, даже не знаю как выразить эмоции мега круто выглядит 🔥 Обработка шикарнейшая 🤯"</p>
+                    <p class="font-bold">- Elena</p>
+                </div>
+                <div class="bg-gray-900/50 p-8 rounded-lg border border-gray-800 reveal">
+                    <p class="text-gray-300 mb-4">"Спасибо ♥️🔥 классно получилось, с интересной стороны посмотрела на себя и мне кажется у тебя потрясающе получилось создать эмоции снимкам"</p>
+                    <p class="font-bold">- Anastasia</p>
+                </div>
+                <div class="bg-gray-900/50 p-8 rounded-lg border border-gray-800 reveal">
+                    <p class="text-gray-300 mb-4">"Вот это красота 😍 Спасибо огромное ❤️ Супер красиво 😇❤️ Ну атмосфера вообще супер вайб Я прям медитирую сижу на эту красоту"</p>
+                    <p class="font-bold">- Liza</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: PROCESO -->
+        <section id="process" class="py-20">
+             <div class="text-center mb-16 reveal">
+                <h2 class="text-5xl font-bold mb-2">Процесс: 4 Шага к Вашему Кино</h2>
+                <p class="text-gray-400">От идеи до финального кадра.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div class="reveal">
+                    <div class="text-3xl font-bold text-purple-400 mb-4">01</div>
+                    <h3 class="text-xl font-bold mb-2">Консультация</h3>
+                    <p class="text-gray-400 text-sm">Мы обсуждаем ваши идеи, мечты и создаем концепцию будущей истории.</p>
+                </div>
+                <div class="reveal">
+                    <div class="text-3xl font-bold text-purple-400 mb-4">02</div>
+                    <h3 class="text-xl font-bold mb-2">Планирование</h3>
+                    <p class="text-gray-400 text-sm">Создаем мудборд, подбираем локации, образы и реквизит.</p>
+                </div>
+                <div class="reveal">
+                    <div class="text-3xl font-bold text-purple-400 mb-4">03</div>
+                    <h3 class="text-xl font-bold mb-2">Съемка</h3>
+                    <p class="text-gray-400 text-sm">Наслаждайтесь процессом! Я создаю комфортную атмосферу и помогаю вам раскрыться.</p>
+                </div>
+                <div class="reveal">
+                    <div class="text-3xl font-bold text-purple-400 mb-4">04</div>
+                    <h3 class="text-xl font-bold mb-2">Магия Постобработки</h3>
+                    <p class="text-gray-400 text-sm">Вы получаете готовые, обработанные в моем фирменном стиле фотографии.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: PREGUNTAS FRECUENTES (FAQ) -->
+        <section id="faq" class="py-20 max-w-3xl mx-auto">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-5xl font-bold mb-2">Часто задаваемые вопросы</h2>
+            </div>
+            <div class="space-y-4 reveal">
+                <!-- Pregunta 1 -->
+                <div class="bg-gray-900/50 rounded-lg border border-gray-800 px-6 py-4">
+                    <div class="faq-question flex justify-between items-center">
+                        <h3 class="font-semibold">Что делать, если я не умею позировать?</h3>
+                        <span class="faq-icon text-xl">+</span>
+                    </div>
+                    <div class="faq-answer pt-0 text-gray-400">
+                        <p>Это совершенно нормально! 99% моих клиентов — не профессиональные модели. Моя работа как раз и заключается в том, чтобы создать комфортную атмосферу и помочь вам. Я буду направлять каждое движение, чтобы вы чувствовали себя естественно и уверенно.</p>
+                    </div>
+                </div>
+                <!-- Pregunta 2 -->
+                <div class="bg-gray-900/50 rounded-lg border border-gray-800 px-6 py-4">
+                    <div class="faq-question flex justify-between items-center">
+                        <h3 class="font-semibold">Как долго ждать готовые фотографии?</h3>
+                        <span class="faq-icon text-xl">+</span>
+                    </div>
+                    <div class="faq-answer pt-0 text-gray-400">
+                        <p>Срок обработки фотографий обычно составляет от 2 до 4 недель, в зависимости от загруженности. Я уделяю каждому кадру максимум внимания, чтобы результат вас порадовал.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: CONTACTO -->
+        <section id="contact" class="py-20 text-center bg-gray-900/30 rounded-lg">
+            <div class="reveal">
+                <h2 class="text-5xl font-bold mb-4">Готовы создать вашу историю?</h2>
+                <p class="text-gray-400 max-w-xl mx-auto mb-8">Я нахожусь в Минске, но открыта для проектов в других городах. Свяжитесь со мной, и мы вместе создадим что-то невероятное.</p>
+                <a href="mailto:yana.deepdarkph@example.com" class="bg-white text-black font-bold py-4 px-10 rounded-full hover:bg-gray-300 transition-all duration-300 text-lg tracking-widest uppercase">Написать мне</a>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- FOOTER -->
+    <footer class="bg-black/50">
+        <div class="container mx-auto px-6 py-8 text-center text-gray-500">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="https://instagram.com/deepdarkph" target="_blank" class="hover:text-white transition-colors">Instagram</a>
+                <a href="https://tiktok.com/@deepdarkmood" target="_blank" class="hover:text-white transition-colors">TikTok</a>
+                <a href="https://t.me/yourtelegram" target="_blank" class="hover:text-white transition-colors">Telegram</a>
+            </div>
+            <p class="text-xs">&copy; 2025 DEEPDARKPH. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript para animaciones e interactividad -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Animaciones al hacer scroll ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => observer.observe(el));
+
+            // --- Menú Móvil ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // --- Cambio de fondo de la barra de navegación al hacer scroll ---
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-black/80', 'backdrop-blur-sm');
+                } else {
+                    navbar.classList.remove('bg-black/80', 'backdrop-blur-sm');
+                }
+            });
+
+            // --- Filtros de la Galería ---
+            const filterButtons = document.querySelectorAll('.filter-button');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Manejo del botón activo
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const filter = button.dataset.filter;
+                    
+                    // Lógica de filtrado
+                    galleryItems.forEach(item => {
+                        item.style.transform = 'scale(0.9)';
+                        item.style.opacity = '0';
+                        setTimeout(() => {
+                            if (filter === 'all' || item.dataset.category === filter) {
+                                item.style.display = 'block';
+                                setTimeout(() => {
+                                    item.style.transform = 'scale(1)';
+                                    item.style.opacity = '1';
+                                }, 50);
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        }, 300);
+                    });
+                });
+            });
+
+            // --- Acordeón de FAQ ---
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+                    
+                    // Cerrar todas las respuestas
+                    document.querySelectorAll('.faq-answer').forEach(ans => ans.style.maxHeight = null);
+                    document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('open'));
+
+                    // Abrir la respuesta clickeada si estaba cerrada
+                    if (!isOpen) {
+                        question.classList.add('open');
+                        answer.style.paddingTop = '1rem';
+                        answer.style.maxHeight = answer.scrollHeight + "px";
+                    } else {
+                         answer.style.paddingTop = '0';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
